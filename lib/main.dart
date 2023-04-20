@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_carrotmarket/detail_page.dart';
+import 'carrot_item.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,86 +13,56 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     items.add(CarrotItem(title: '팝니다.', addr: '우리집', price: 1000));
-    items.add(CarrotItem(title: '팝니다.', addr: '우리집', price: 1000));
-    items.add(CarrotItem(title: '팝니다.', addr: '우리집', price: 1000));
-    items.add(CarrotItem(title: '팝니다.', addr: '우리집', price: 1000));
-    items.add(CarrotItem(title: '팝니다.', addr: '우리집', price: 1000));
-    items.add(CarrotItem(title: '팝니다.', addr: '우리집', price: 1000));
-    items.add(CarrotItem(title: '팝니다.', addr: '우리집', price: 1000));
-    items.add(CarrotItem(title: '팝니다.', addr: '우리집', price: 1000));
-    items.add(CarrotItem(title: '팝니다.', addr: '우리집', price: 1000));
+    items.add(CarrotItem(title: '팝니다.', addr: '우리집', price: 10300));
+    items.add(CarrotItem(title: '팝니다.', addr: '우리집', price: 10100));
+    items.add(CarrotItem(title: '팝니다.', addr: '우리집', price: 101200));
+    items.add(CarrotItem(title: '팝니다.', addr: '우리집', price: 103100));
+    items.add(CarrotItem(title: '팝니다.', addr: '우리집', price: 101400));
+    items.add(CarrotItem(title: '팝니다.', addr: '우리집', price: 101300));
+    items.add(CarrotItem(title: '팝니다.', addr: '우리집', price: 10120));
+    items.add(CarrotItem(title: '팝니다.', addr: '우리집', price: 10300));
 
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Malbob market'),
-          backgroundColor: Colors.orange,
-        ),
-        body: SingleChildScrollView(
-          // 스크롤 쓰는법
-          child: Column(
-            children: [for (var item in items) item],
-          ),
-        ),
-      ),
+      home: HomePage(items: items),
     );
   }
 }
 
-class CarrotItem extends StatelessWidget {
-  String title, addr;
-  int price;
-
-  CarrotItem({
-    required this.title,
-    required this.addr,
-    required this.price,
+class HomePage extends StatelessWidget {
+  const HomePage({
     super.key,
+    required this.items,
   });
+
+  final List<CarrotItem> items;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 150,
-          height: 150,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              image:
-                  const DecorationImage(image: AssetImage('images/pizza.jpg'))),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Malbob market'),
+        backgroundColor: Colors.orange,
+      ),
+      body: SingleChildScrollView(
+        // 스크롤 쓰는법
+        child: Column(
+          children: [
+            for (var item in items)
+              GestureDetector(
+                  // 행동 감지
+                  onTap: () {
+                    // 무엇을 감지할건지
+                    Navigator.push(
+                        // 길잡이 역활
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailPage(price: item.price),
+                        ));
+                  }, // 동작=기능=function=method
+                  child: item)
+          ],
         ),
-        const SizedBox(
-          width: 20,
-        ),
-        Flexible(
-          flex: 1,
-          child: SizedBox(
-            height: 150,
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title,
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold)),
-                Text(addr,
-                    style: const TextStyle(
-                      decoration: TextDecoration.underline,
-                    )),
-                Text('$price'),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [Icon(Icons.heart_broken), Text('12')],
-                )
-              ],
-            ),
-          ),
-        )
-      ],
+      ),
     );
   }
 }
